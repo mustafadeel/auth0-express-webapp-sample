@@ -19,7 +19,13 @@ app.use(express.json());
 
 const config = {
   authRequired: false,
-  auth0Logout: true
+  auth0Logout: true,
+  secret: process.env.CLIENT_SECRET,
+  authorizationParams: {
+    response_type: 'code',
+    scope: process.env.SCOPES,
+    audience: process.env.AUDIENCE,
+  },
 };
 
 const port = process.env.PORT || 3000;

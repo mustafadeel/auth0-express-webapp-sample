@@ -1,0 +1,11 @@
+<%- include('partials/header') -%>
+
+  <h1 class="text-4xl mb-4">Welcome <%= user.nickname %></h1>
+
+  <p class="py-3">
+    API endpoint is <code class="bg-gray-200"><%= api %></code>.<br>
+  </p>
+
+  <pre class="block bg-gray-300 p-4 text-sm overflow-scroll"><%= clients %></pre>
+
+<%- include('partials/footer') -%>
