@@ -1,0 +1,35 @@
+@startuml
+autonumber
+
+title Partner Integration Sequence Diagram
+
+actor "Developer with tenant admin access" as d
+participant "Partner Portal\n(RWA)" as p
+participant "Auth0\nDomain RTA" as a0
+participant "Developer's\nAuth0 Tenant" as t
+
+group Request Client Details (once per partner)
+p -> a0: request connection details \n submit a public key
+a0 -> p: client_id, domain, client_secret?
+end
+
+d -> p: request integration with Auth0
+p -> d: 302
+
+d -> a0: GET {rta}.{tld}/authorize? {client_id & \n audience=https://*.{tld}/api/v2/ & \n scope=offline_access read:clients & \n nonce=n }
+a0 <-> d: login page & submit
+
+a0 <-> d: consent page & tenant selection drop down submit
+
+a0 -> d: 302
+
+d -> p: GET partner.portal/cb?{code & state=s}
+
+p <-> a0: exchange code to access_token
+
+p -> t: GET [Bearer access_token] /api/v2/clients
+t -> p: clients list
+
+p -> d: login success \nlist clients to integrated with
+
+@enduml
